@@ -1,6 +1,15 @@
 import Module from "./partition.js";
 
-Module().then(function (mymod) {
-  mymod._partition([7, 3, 2, 1, 5, 4, 8], 7);
-  // console.log(myPartition);
-});
+function parseInput() {
+  let input = document.getElementById("input").value;
+  input = JSON.parse(input);
+  partitionate(input);
+}
+document.querySelector("button").addEventListener("click", parseInput);
+
+function partitionate(input) {
+  let n = input.length;
+  Module().then(function (mymod) {
+    mymod._partition(input, n);
+  });
+}
