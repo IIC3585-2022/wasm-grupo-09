@@ -10,6 +10,7 @@ document.querySelector("button").addEventListener("click", parseInput);
 function partitionate(input) {
   let n = input.length;
   Module().then(function (mymod) {
-    mymod._partition(input, n);
+    let partition = mymod._partition(input, n);
+    console.log(typeof partition);
   });
 }
