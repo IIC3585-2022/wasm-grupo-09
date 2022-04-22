@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 typedef struct subset
 {
@@ -16,7 +17,7 @@ typedef struct answer
 } Answer;
 
 
-int accumulate(int* S, int n){
+int accumulate(uint32_t* S, uint32_t n){
     int sum = 0;
     for(int i = 0; i<n; i++){
         sum += S[i];
@@ -35,7 +36,7 @@ void clean(Answer* ans){
 };
 
 // codigo obtenido de: https://www.techiedelight.com/3-partition-problem-extended-print-all-partitions/
-int isSubsetExists(int* S, int n, int a, int b, int c, int* arr){
+int isSubsetExists(uint32_t* S, int n, int a, int b, int c, int* arr){
     if(a==0 && b==0 && c==0){
         return 1;
     }
@@ -64,7 +65,7 @@ int isSubsetExists(int* S, int n, int a, int b, int c, int* arr){
     return A || B || C;
 };
 
-Answer* partition(int* S, int n){
+int partition(uint32_t* S, uint32_t n, uint32_t* subset1, uint32_t* subset2, uint32_t* subset3){
     int sum = accumulate(S, n);
     int arr[n];
     int result = (n>=3) && !(sum%3) && isSubsetExists(S, n-1, (int) sum/3, (int) sum/3,(int) sum/3, arr);
@@ -85,42 +86,60 @@ Answer* partition(int* S, int n){
             for(int j =0; j<n; j++){
                 if(arr[j]== i+1){
                     answer->subset[i]->subset[k] = S[j];
+                    if (i == 0) {
+                        subset1[k] = S[j];
+                    }
+                    if (i == 1) {
+                        subset2[k] = S[j];
+                    }
+                    if (i == 2) {
+                        subset3[k] = S[j];
+                    }
                     k++;
-                   
                 }
-
             }
-            
-        }  
-       
+        }
     }
     answer->msg = "3-partition of set is not posible\n";
-    return answer;
-
     
-
+    if (!answer -> partition){
+        clean(answer);
+        return 0;
+    }
+    else {
+        clean(answer);
+        return 1;
+    }
 }
 
 
 int main(){
-    int S[7] = {7, 3, 2, 1, 5,4, 8};
-    int size_arr = (int) sizeof(S);
-    int n  = (int) (size_arr/sizeof(S[0]));
-    Answer* ans = partition(S,n);
-    if(!ans->partition){
-        printf("%s", ans->msg);
-
+    uint32_t S[7] = {7, 3, 2, 1, 5,4, 8};
+    uint32_t size_arr = (uint32_t) sizeof(S);
+    uint32_t n  = (uint32_t) (size_arr/sizeof(S[0]));
+    uint32_t subset1[3];
+    uint32_t subset2[3];
+    uint32_t subset3[3];
+    int result = partition(S,n, subset1, subset2, subset3);
+    printf("%i %i\n", subset1[0], subset1[1]);
+    if(!result){
+        printf("No\n");
     }else{
         for(int i = 0; i<3; i++){
             printf("partition %i:", i);
-            for(int j=0; j<ans->subset[i]->len; j++){
-                printf(" %i ",ans->subset[i]->subset[j]);
+            for(int j=0; j < 3; j++){
+                if (i == 0){
+                    printf(" %i ", subset1[j]);
+                }
+                if (i == 1){
+                    printf(" %i ", subset2[j]);
+                }
+                if (i == 2) {
+                    printf(" %i ", subset3[j]);
+                }
             }
             printf("\n");
         }
-        clean(ans);
     }
-    
     return 0;
-
-}
+};
