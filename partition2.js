@@ -82,40 +82,19 @@ function partition(S, n, subset1, subset2, subset3) {
   }
   answer.msg = "3-partition of set is not posible\n";
   if (!answer.partition) {
-    answer.msg = "3-partition of set is posible\n";
     return 0;
   } else {
+    answer.msg = "3-partition of set is posible\n";
     return 1;
   }
 }
-function mainV2() {
-  let S = [7, 3, 2, 1, 5, 4, 8];
-  let n = S.length;
-  let subset1 = new Array(3);
-  let subset2 = new Array(3);
-  let subset3 = new Array(3);
-  let result = partition(S, n, subset1, subset2, subset3);
-  console.log("%d %d\n", subset1[0], subset1[1]);
-  if (!result) {
-    console.log("No \n");
-  } else {
-    for (let i = 0; i < 3; i++) {
-      console.log("partition %d:", i);
-      for (let j = 0; j < 3; j++) {
-        if (i == 0) {
-          console.log("%d ", subset1[j]);
-        }
-        if (i == 1) {
-          console.log("%d ", subset2[j]);
-        }
-        if (i == 2) {
-          console.log("%d ", subset3[j]);
-        }
-      }
-      console.log("\n");
-    }
-  }
-  return 0;
+function mainV2(array) {
+  let s1 = [];
+  let s2 = [];
+  let s3 = [];
+  let result = partition([7, 3, 2, 1, 5, 4, 8], array.length, s1, s2, s3);
+  return { result, s1, s2, s3 };
 }
 
-mainV2();
+/* let result = mainV2([7, 3, 2, 1, 5, 4, 8]);
+console.log(result); */
