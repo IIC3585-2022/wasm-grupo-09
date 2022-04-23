@@ -15,9 +15,9 @@ const makeSubsetsPtr = (myModule, input) => {
   const subset2Ptr = myModule._malloc(4 * (input.length - 2));
   const subset3Ptr = myModule._malloc(4 * (input.length - 2));
   for (let i = 0; i < input.length - 2; i++) {
-    myModule.setValue(subset1Ptr + (i * 4), 0, "i32");
-    myModule.setValue(subset2Ptr + (i * 4), 0, "i32");
-    myModule.setValue(subset3Ptr + (i * 4), 0, "i32");
+    myModule.setValue(subset1Ptr + (i * 4), -1, "i32");
+    myModule.setValue(subset2Ptr + (i * 4), -1, "i32");
+    myModule.setValue(subset3Ptr + (i * 4), -1, "i32");
   };
   return [subset1Ptr, subset2Ptr, subset3Ptr];
 };
@@ -39,7 +39,7 @@ const getSubsetFromPtr = (myModule, subsetPtr, input) => {
   for (let i = 0; i < input.length - 2; i++){
     subset.push(myModule.getValue(subsetPtr + (i * 4), "i32")); 
   };
-  return subset.filter((value) => value !== 0);
+  return subset.filter((value) => value !== -1);
 };
 
 // Gets the subsets results from the function
@@ -51,10 +51,32 @@ const getSubsets = (myModule, subset1Ptr, subset2Ptr, subset3Ptr, input) => {
   return subsets;
 };
 
+const showWASMTime = (time) => $('#wasm-time').text(`${Math.floor(time * 10000) / 10000} ms`)
+
+const cleanResults = () => $('#results').empty();
+
+const showPartition = (subset, i) => {
+  let result = $('#results');
+  let subsetNumbers = ''
+  for (let i = 0; i < subset.length; i++) {
+    subsetNumbers += `<p class='h4 p-2'>${subset[i]}</p>`
+  };
+  let partitionDiv = `<div id='partition${i}' class='d-flex flex-wrap p-5 justify-content-center'>${subsetNumbers}</div>`
+  result.append(partitionDiv);
+};
+
+const showError = () => {
+  let result = $('#results');
+  let errorDiv = "<p id='error' class='h3'>No hay una combinación de 3</p>"
+  result.append(errorDiv);
+};
+
 Module().then(function (mymod) {
-  document.querySelector("button").addEventListener("click", () => {
-    let input = document.getElementById("input").value;
+  $("#button").click(() => {
+    cleanResults();
+    let input = $("#numbers-array").val();
     input = JSON.parse(`[${input}]`);
+    const startTime = performance.now();
     const [
       arrayPtr,
       subset1Ptr,
@@ -73,11 +95,17 @@ Module().then(function (mymod) {
       subset2Ptr, 
       subset3Ptr
     );
+    const wasmEndTime = performance.now();
+    showWASMTime(wasmEndTime - startTime);
     if (result === 1) {
       let subsets = getSubsets(mymod, subset1Ptr, subset2Ptr, subset3Ptr, input);
+      showPartition(subsets[0], 0);
+      showPartition(subsets[1], 1);
+      showPartition(subsets[2], 2);
       console.log(subsets);
     }
     else {
+      showError();
       console.log('No hay una combinación de 3');
     };
   });
