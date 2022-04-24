@@ -1,7 +1,5 @@
 import Module from "./partition.js";
-// import { mainV2 } from "./partition2.js";
-
-//testing javascript version
+import JSPartition from "./JSPartition.js";
 
 // Sets the arrayPtr to the module
 const makePtrArray = (myModule, input) => {
@@ -50,8 +48,9 @@ const getSubsets = (myModule, subset1Ptr, subset2Ptr, subset3Ptr, input) => {
   return subsets;
 };
 
-const showWASMTime = (time) =>
+const showWASMTime = (time) => {
   $("#wasm-time").text(`${Math.floor(time * 10000) / 10000} ms`);
+};
 
 const showJSTime = (time) => {
   $("#js-time").text(`${Math.floor(time * 10000) / 10000} ms`);
@@ -101,6 +100,19 @@ Module().then(function (mymod) {
     );
     const wasmEndTime = performance.now();
     showWASMTime(wasmEndTime - startTime);
+    let jsSubset1 = [];
+    let jsSubset2 = [];
+    let jsSubset3 = [];
+    const jsStartTime = performance.now();
+    let jsResult = JSPartition(
+      input,
+      input.length,
+      jsSubset1,
+      jsSubset2,
+      jsSubset3
+    );
+    const jsEndTime = performance.now();
+    showJSTime(jsEndTime - jsStartTime);
     if (result === 1) {
       let subsets = getSubsets(
         mymod,
@@ -112,16 +124,8 @@ Module().then(function (mymod) {
       showPartition(subsets[0], 0);
       showPartition(subsets[1], 1);
       showPartition(subsets[2], 2);
-      console.log(subsets);
     } else {
       showError();
-      console.log("No hay una combinación de 3");
     }
-    // ejecución del javascript
-    /* let startTimeV2 = performance.now();
-    let result2 = mainV2(input);
-    let endTimeV2 = performance.now();
-    showJSTime(endTimeV2 - startTimeV2);
-    console.log(result2); */
   });
 });

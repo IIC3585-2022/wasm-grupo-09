@@ -46,7 +46,7 @@ function isSubsetExists(S, n, a, b, c, arr) {
   return A || B || C;
 }
 
-function partition(S, n, subset1, subset2, subset3) {
+function JSPartition(S, n, subset1, subset2, subset3) {
   let sum = accumulate(S, n);
   let arr = new Array(S.length);
   let result =
@@ -88,14 +88,14 @@ function partition(S, n, subset1, subset2, subset3) {
     return 1;
   }
 }
-export const mainV2 = (array) => {
+const mainV2 = (array) => {
   let s1 = [];
   let s2 = [];
   let s3 = [];
-  let result = partition([7, 3, 2, 1, 5, 4, 8], array.length, s1, s2, s3);
+  let result = JSPartition([7, 3, 2, 1, 5, 4, 8], array.length, s1, s2, s3);
   return { result, s1, s2, s3 };
 };
 
-export { mainV2 };
+export default JSPartition;
 /* let result = mainV2([7, 3, 2, 1, 5, 4, 8]);
 console.log(result); */
