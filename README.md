@@ -25,3 +25,5 @@ python -m http.server
 ```
 
 Con esto se abre el puerto 8000 con los archivos en el link: `localhost:8000/index.html`.
+
+Dentro de la vista se ve un lugar para poner el input, el cuál debe ser el arreglo de números separados por coma.
