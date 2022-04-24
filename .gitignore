@@ -5,3 +5,5 @@ partition
 /obj
 
 .vscode
+
+*.wasm
