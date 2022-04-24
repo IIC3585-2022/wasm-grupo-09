@@ -88,6 +88,7 @@ function JSPartition(S, n, subset1, subset2, subset3) {
     return 1;
   }
 }
+
 const mainV2 = (array) => {
   let s1 = [];
   let s2 = [];
@@ -97,5 +98,3 @@ const mainV2 = (array) => {
 };
 
 export default JSPartition;
-/* let result = mainV2([7, 3, 2, 1, 5, 4, 8]);
-console.log(result); */

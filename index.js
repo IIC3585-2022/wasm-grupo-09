@@ -79,7 +79,6 @@ Module().then(function (mymod) {
     cleanResults();
     let input = $("#numbers-array").val();
     input = JSON.parse(`[${input}]`);
-    const startTime = performance.now();
     const [arrayPtr, subset1Ptr, subset2Ptr, subset3Ptr] = makePtrs(
       mymod,
       input
@@ -91,6 +90,7 @@ Module().then(function (mymod) {
       "number",
       "number",
     ]);
+    const wasmStartTime = performance.now();
     let result = partition(
       arrayPtr,
       input.length,
@@ -99,11 +99,10 @@ Module().then(function (mymod) {
       subset3Ptr
     );
     const wasmEndTime = performance.now();
-    showWASMTime(wasmEndTime - startTime);
+    showWASMTime(wasmEndTime - wasmStartTime);
     let jsSubset1 = [];
     let jsSubset2 = [];
     let jsSubset3 = [];
-    const jsStartTime = performance.now();
     let jsResult = JSPartition(
       input,
       input.length,
@@ -111,8 +110,10 @@ Module().then(function (mymod) {
       jsSubset2,
       jsSubset3
     );
+    console.log(jsResult);
+    console.log([jsSubset1, jsSubset2, jsSubset3]);
     const jsEndTime = performance.now();
-    showJSTime(jsEndTime - jsStartTime);
+    showJSTime(jsEndTime - wasmEndTime);
     if (result === 1) {
       let subsets = getSubsets(
         mymod,
