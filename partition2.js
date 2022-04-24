@@ -88,13 +88,14 @@ function partition(S, n, subset1, subset2, subset3) {
     return 1;
   }
 }
-function mainV2(array) {
+export const mainV2 = (array) => {
   let s1 = [];
   let s2 = [];
   let s3 = [];
   let result = partition([7, 3, 2, 1, 5, 4, 8], array.length, s1, s2, s3);
   return { result, s1, s2, s3 };
-}
+};
 
+export { mainV2 };
 /* let result = mainV2([7, 3, 2, 1, 5, 4, 8]);
 console.log(result); */

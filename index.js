@@ -1,5 +1,5 @@
 import Module from "./partition.js";
-import * as test from "./partition2.js";
+// import { mainV2 } from "./partition2.js";
 
 //testing javascript version
 
@@ -52,6 +52,10 @@ const getSubsets = (myModule, subset1Ptr, subset2Ptr, subset3Ptr, input) => {
 
 const showWASMTime = (time) =>
   $("#wasm-time").text(`${Math.floor(time * 10000) / 10000} ms`);
+
+const showJSTime = (time) => {
+  $("#js-time").text(`${Math.floor(time * 10000) / 10000} ms`);
+};
 
 const cleanResults = () => $("#results").empty();
 
@@ -113,5 +117,11 @@ Module().then(function (mymod) {
       showError();
       console.log("No hay una combinación de 3");
     }
+    // ejecución del javascript
+    /* let startTimeV2 = performance.now();
+    let result2 = mainV2(input);
+    let endTimeV2 = performance.now();
+    showJSTime(endTimeV2 - startTimeV2);
+    console.log(result2); */
   });
 });
