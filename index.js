@@ -1,6 +1,26 @@
 import Module from "./partition.js";
 import JSPartition from "./JSPartition.js";
 
+const isInputValid = (input) => {
+  if (!input.includes(',')) {
+    return false;
+  };
+  let splitInput = input.split(',')
+  for (let i = 0; i < splitInput.length; i++) {
+    if (isNaN(splitInput[i]) || splitInput[i] === '') {
+      return false;
+    };
+  };
+  return true;
+};
+
+const showInputError = () => {
+  $('#numbers-array').val('');
+  $("#input-group").after(
+    "<p id='error' class='text-danger'>Ingresa un input válido</p>"
+  );
+};
+
 // Sets the arrayPtr to the module
 const makePtrArray = (myModule, input) => {
   const arrayPtr = myModule._malloc(4 * input.length);
@@ -56,7 +76,10 @@ const showJSTime = (time) => {
   $("#js-time").text(`${Math.floor(time * 10000) / 10000} ms`);
 };
 
-const cleanResults = () => $("#results").empty();
+const cleanResults = () => {
+  $('#error').remove();
+  $("#results").empty();
+};
 
 const showPartition = (subset, i) => {
   let result = $("#results");
@@ -78,6 +101,10 @@ Module().then(function (mymod) {
   $("#button").click(() => {
     cleanResults();
     let input = $("#numbers-array").val();
+    if (!isInputValid(input)) {
+      showInputError();
+      return;
+    }
     input = JSON.parse(`[${input}]`);
     const [arrayPtr, subset1Ptr, subset2Ptr, subset3Ptr] = makePtrs(
       mymod,
