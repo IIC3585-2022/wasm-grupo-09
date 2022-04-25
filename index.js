@@ -9,8 +9,11 @@ const isInputValid = (input) => {
   for (let i = 0; i < splitInput.length; i++) {
     if (isNaN(splitInput[i]) || splitInput[i] === "") {
       return false;
-    }
-  }
+    };
+    if (parseInt(splitInput[i]) < 0) {
+      return false;
+    };
+  };
   return true;
 };
 
