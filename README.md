@@ -26,4 +26,4 @@ python -m http.server
 
 Con esto se abre el puerto 8000 con los archivos en el link: `localhost:8000/index.html`.
 
-Dentro de la vista se ve un lugar para poner el input, el cuál debe ser el arreglo de números separados por coma.
+Dentro de la vista se ve un lugar para poner el input, el cuál debe ser el arreglo de números separados por coma. Además, por temas del diseño del algoritmo y por desiciones de diseño, solo dejamos que los números posibles dentro del conjunto sean positivos (incluyendo el 0).
